@@ -1,0 +1,28 @@
+#
+#Copyright Odin Solutions S.L. All Rights Reserved.
+#
+#SPDX-License-Identifier: Apache-2.0
+#
+
+version: "3.5"
+services:
+  securityfachade:
+    image: iotcrawler/securityfachade
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    expose:
+      - "8081"
+    ports:
+      - "8081:8080"
+      - "8443:8443"
+    restart: unless-stopped
+    volumes:
+      - ./configuration_files/certs/servidor.iotcrawler.org_cert.pem:/usr/local/tomcat/conf/server_cert.pem
+      - ./configuration_files/certs/servidor.iotcrawler.org_privkey.pem:/usr/local/tomcat/conf/server_privkey.pem
+      - ./configuration_files/server.xml:/usr/local/tomcat/conf/server.xml
+      - ./configuration_files:/usr/local/tomcat/conf/configuration_files
+    environment:
+      - CAPMANAGER_CONFIG_FOLDER=/usr/local/tomcat/conf/configuration_files

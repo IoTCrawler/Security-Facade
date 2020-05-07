@@ -1,0 +1,43 @@
+{
+	"fiwarePEP": {
+		"protocol": "https",
+		"address": "localhost",
+		"port": "1028"
+	},
+	"pdp": {
+		"protocol": "http",
+		"address": "authcomps",
+		"port": "8080",
+		"services": [{
+				"name": "getPDPdecision",
+				"path": "XACMLServletPDP/"
+			}
+		]
+	},
+	"idemix": {
+		"protocol": "https",
+		"address": "keyrock",
+		"port": "443",
+		"services": [{
+				"name": "getToken",
+				"path": "/v1/auth/tokens"
+			}]
+		
+		
+	},
+	"capmanager": {
+		"protocol": "https",
+		"address": "securityfachade",
+		"port": "8443",
+		"services": [{
+				"name": "verify",
+				"path": "CapabilityManagerServlet/verify"
+			},
+			{
+				"name": "generate",
+				"path": "/CapabilityManagerServlet/generate"
+			}
+		]
+
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"DOMAIN":"@odins.es",
+	"CREDENTIAL_INFO":[{
+		"KEY_STORE_LOCATION"	:"local_dependencies/certs/capmanager.plugnharvest.odins.es.jks",
+		"KEY_STORE_PASSWORD"	:"password",
+		"KEY_STORE_ENTRY"		: "capmanager.plugnharvest.odins.es",
+		
+		"TRUST_STORE_LOCATION"	:"local_dependencies/certs/trust_store.jks",
+		"TRUST_STORE_PASSWORD"	:"password",
+		"TRUST_STORE_ENTRY"		: "intermediaryca",
+		"CERT_ALGORITHM"		:[{
+						"PUBLIC_KEY" : "RSA 4096 bits",
+						"SIGNATURE"  : "SHA512withRSA"
+		}]	
+	}]
+}
+
