@@ -38,3 +38,5 @@ WORKDIR /root/
 RUN rm -rf git_projects
 RUN rm -rf /root/.ssh
 
+COPY /configuration_files /usr/local/tomcat/conf/configuration_files
+
