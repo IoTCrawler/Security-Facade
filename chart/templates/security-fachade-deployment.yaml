@@ -56,8 +56,6 @@ spec:
         - secretRef:
             name: {{ .Values.application.secretName }}
         {{- end }}
-        command: 
-        - provision
         env:
         ports:
         - name: "{{ .Values.securityfachade.service.name }}"
@@ -67,10 +65,10 @@ spec:
           httpGet:
             path: {{ .Values.livenessProbe.path }}
             scheme: {{ .Values.livenessProbe.scheme }}
-            port: {{ .Values.service.internalPort }}
+            port: {{ .Values.securityfachade.service.internalPort }}
 {{- else if eq .Values.livenessProbe.probeType "tcpSocket" }}
           tcpSocket:
-            port: {{ .Values.service.internalPort }}
+            port: {{ .Values.securityfachade.service.internalPort }}
 {{- else if eq .Values.livenessProbe.probeType "exec" }}
           exec:
             command:
@@ -83,10 +81,10 @@ spec:
           httpGet:
             path: {{ .Values.readinessProbe.path }}
             scheme: {{ .Values.readinessProbe.scheme }}
-            port: {{ .Values.service.internalPort }}
+            port: {{ .Values.securityfachade.service.internalPort }}
 {{- else if eq .Values.readinessProbe.probeType "tcpSocket" }}
           tcpSocket:
-            port: {{ .Values.service.internalPort }}
+            port: {{ .Values.securityfachade.service.internalPort }}
 {{- else if eq .Values.readinessProbe.probeType "exec" }}
           exec:
             command:
