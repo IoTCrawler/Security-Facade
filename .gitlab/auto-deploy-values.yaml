@@ -9,9 +9,9 @@ livenessProbe:
   path: "/CapabilityManagerServlet"
   initialDelaySeconds: 14
   timeoutSeconds: 14
-  scheme: "HTTPS"
+  scheme: "HTTP"
 readinessProbe:
   path: "/CapabilityManagerServlet"
   initialDelaySeconds: 4
   timeoutSeconds: 2
-  scheme: "HTTPS"
+  scheme: "HTTP"
