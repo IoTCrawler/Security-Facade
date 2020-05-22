@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  labels:
+    app: {{ template "appname" . }}
+    track: "{{ .Values.application.track }}"
+    tier: "{{ .Values.application.tier }}"
+    release: {{ .Release.Name }}
+    service: {{ .Values.securityfachade.service.name }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  name: {{ .Values.securityfachade.service.name }}
+spec:
+  tls:
+  - hosts:
+    - xacml-security-fachade.35.241.228.250.nip.io
+    - le-58.35.241.228.250.nip.io
+    secretName: security-fachade-tls
+  rules:
+  - host: xacml-security-fachade.35.241.228.250.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.securityfachade.service.name }}
+          servicePort: {{ .Values.securityfachade.service.internalPort }}
+  - host: le-58.35.241.228.250.nip.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ .Values.securityfachade.service.name }}
+          servicePort: {{ .Values.securityfachade.service.internalPort }}

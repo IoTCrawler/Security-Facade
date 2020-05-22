@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ template "appname" . }}
+    track: "{{ .Values.application.track }}"
+    tier: "{{ .Values.application.tier }}"
+    release: {{ .Release.Name }}
+    service: {{ .Values.securityfachade.service.name }}
+  name: {{ .Values.securityfachade.service.name }}
+spec:
+  type: {{ .Values.securityfachade.service.type }}
+  ports:
+  - port: {{ .Values.securityfachade.service.externalPort }}
+    targetPort: {{ .Values.securityfachade.service.internalPort }}
+    protocol: TCP
+    name: {{ .Values.securityfachade.service.name }}
+  selector:
+    app: {{ template "appname" . }}
+    track: "{{ .Values.application.track }}"
+    tier: "{{ .Values.application.tier }}"
+    release: {{ .Release.Name }}
+    service: {{ .Values.securityfachade.service.name }}
+status:
+  loadBalancer: {}
