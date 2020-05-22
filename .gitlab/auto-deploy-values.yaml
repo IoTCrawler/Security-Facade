@@ -6,12 +6,12 @@ service:
   internalPort: 8443
 
 livenessProbe:
-  path: "/"
+  path: "/CapabilityManagerServlet"
   initialDelaySeconds: 14
   timeoutSeconds: 14
   scheme: "HTTPS"
 readinessProbe:
-  path: "/"
+  path: "/CapabilityManagerServlet"
   initialDelaySeconds: 4
   timeoutSeconds: 2
   scheme: "HTTPS"
