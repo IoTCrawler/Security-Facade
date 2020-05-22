@@ -34,8 +34,6 @@ RUN mvn -U clean install
 RUN ls -lah target
 RUN mv ./target/CapabilityManagerServlet-0.0.2-SNAPSHOT.war /usr/local/tomcat/webapps/CapabilityManagerServlet.war
 
-#COPY configuration_files /usr/local/tomcat/conf/configuration_files
-
 WORKDIR /root/
 RUN rm -rf git_projects
 RUN rm -rf /root/.ssh
