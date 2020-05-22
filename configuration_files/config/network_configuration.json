@@ -28,7 +28,7 @@
 	"capmanager": {
 		"protocol": "http",
 		"address": "production-auto-deploy.security-fachade-58-production",
-		"port": "8443",
+		"port": "8080",
 		"services": [{
 				"name": "verify",
 				"path": "CapabilityManagerServlet/verify"
