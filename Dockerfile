@@ -39,6 +39,3 @@ RUN mv ./target/CapabilityManagerServlet-0.0.2-SNAPSHOT.war /usr/local/tomcat/we
 WORKDIR /root/
 RUN rm -rf git_projects
 RUN rm -rf /root/.ssh
-
-
-
