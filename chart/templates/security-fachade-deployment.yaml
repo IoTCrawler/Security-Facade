@@ -45,6 +45,11 @@ spec:
         service: {{ .Values.securityfachade.service.name }}
     
     spec:
+      volumes:
+      - name: configs
+        configMap:
+          defaultMode: 0755
+          name: security-configmap
       imagePullSecrets:
 {{ toYaml .Values.securityfachade.image.secrets | indent 10 }}
       containers:
@@ -57,6 +62,11 @@ spec:
             name: {{ .Values.application.secretName }}
         {{- end }}
         env:
+        - name: CAPMANAGER_CONFIG_FOLDER
+          value: /usr/local/tomcat/conf/configuration_files
+        volumeMounts:
+        - name: configs
+          mountPath: /usr/local/tomcat/conf/configuration_files
         ports:
         - name: "{{ .Values.securityfachade.service.name }}"
           containerPort: {{ .Values.securityfachade.service.internalPort }}
