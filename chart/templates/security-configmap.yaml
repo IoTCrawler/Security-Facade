@@ -9,4 +9,8 @@ metadata:
   name: security-configmap
 data:
   network_configuration.json: |
-{{ .Files.Get "scripts/network_configuration.json" | indent 4 }}
+{{ .Files.Get "config/network_configuration.json" | indent 4 }}
+  configuration.json: |
+{{ .Files.Get "config/configuration.json" | indent 4 }}
+  app_configuration.json: |
+{{ .Files.Get "config/app_configuration.json" | indent 4 }}

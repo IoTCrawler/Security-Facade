@@ -27,7 +27,7 @@
 	},
 	"capmanager": {
 		"protocol": "http",
-		"address": "production-auto-deploy.security-fachade-58-production",
+		"address": "security.security-fachade-58-production",
 		"port": "8080",
 		"services": [{
 				"name": "verify",

@@ -1,0 +1,9 @@
+{
+	"log4j-application.log_file_path": ".",
+	"certificates":{
+		"clientKeyStorePath":"/certs/cliente.iotcrawler.org.jks", 	
+		"clientKeyStorePass":"password", 	
+		"clientTrustStorePath":"/certs/trust_store.jks",
+		"clientTrustStorePass":"password" 
+	}
+}

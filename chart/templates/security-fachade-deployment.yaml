@@ -53,6 +53,10 @@ spec:
           items:
           - key: network_configuration.json
             path: network_configuration.json
+          - key: configuration.json
+            path: configuration.json
+          - key: app_configuration.json
+            path: app_configuration.json
       imagePullSecrets:
 {{ toYaml .Values.securityfachade.image.secrets | indent 10 }}
       containers:
