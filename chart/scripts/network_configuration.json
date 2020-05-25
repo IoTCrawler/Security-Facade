@@ -1,0 +1,43 @@
+{
+	"fiwarePEP": {
+		"protocol": "http",
+		"address": "production-auto-deploy.pep-proxy-26-production",
+		"port": "1027"
+	},
+	"pdp": {
+		"protocol": "http",
+		"address": "production-auto-deploy.xacml-pap-pdp-48-production",
+		"port": "8080",
+		"services": [{
+				"name": "getPDPdecision",
+				"path": "XACMLServletPDP/"
+			}
+		]
+	},
+	"idemix": {
+		"protocol": "http",
+		"address": "production-keyrock.keyrock-28-production",
+		"port": "3000",
+		"services": [{
+				"name": "getToken",
+				"path": "/v1/auth/tokens"
+			}]
+		
+		
+	},
+	"capmanager": {
+		"protocol": "http",
+		"address": "production-auto-deploy.security-fachade-58-production",
+		"port": "8080",
+		"services": [{
+				"name": "verify",
+				"path": "CapabilityManagerServlet/verify"
+			},
+			{
+				"name": "generate",
+				"path": "/CapabilityManagerServlet/generate"
+			}
+		]
+
+	}
+}

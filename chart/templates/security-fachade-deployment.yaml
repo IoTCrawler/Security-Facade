@@ -50,6 +50,9 @@ spec:
         configMap:
           defaultMode: 0755
           name: security-configmap
+          items:
+          - key: network_configuration.json
+            path: network_configuration.json
       imagePullSecrets:
 {{ toYaml .Values.securityfachade.image.secrets | indent 10 }}
       containers:
