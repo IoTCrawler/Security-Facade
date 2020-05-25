@@ -1,3 +1,4 @@
+{{- if .Values.comment }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -28,3 +29,4 @@ data:
 {{ .Files.Get "certs/trust_store.jks" | b64enc | indent 4 }}
   server.xml: |
 {{ .Files.Get "server.xml" | indent 4 }}
+{{- end }}

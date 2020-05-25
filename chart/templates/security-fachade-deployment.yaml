@@ -45,6 +45,7 @@ spec:
         service: {{ .Values.securityfachade.service.name }}
     
     spec:
+    {{- if .Values.comment }}
       volumes:
       - name: configs
         configMap:
@@ -71,6 +72,7 @@ spec:
             path: certs/trust_store.jks
           - key: server.xml
             path: server.xml
+    {{end}}
       imagePullSecrets:
 {{ toYaml .Values.securityfachade.image.secrets | indent 10 }}
       containers:
@@ -85,9 +87,11 @@ spec:
         env:
         - name: CAPMANAGER_CONFIG_FOLDER
           value: /usr/local/tomcat/conf/configuration_files
+        {{- if .Values.comment }}
         volumeMounts:
         - name: configs
           mountPath: /usr/local/tomcat/conf/configuration_files
+        {{end}}
         ports:
         - name: "{{ .Values.securityfachade.service.name }}"
           containerPort: {{ .Values.securityfachade.service.internalPort }}

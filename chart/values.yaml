@@ -8,7 +8,7 @@ deploymentApiVersion: apps/v1
 securityfachade:
   name: security-fachade
   image:
-    repository: gitlab.iotcrawler.net:4567/xacml/security-fachade/master
+    repository: security-fachade-local
     tag: latest
     pullPolicy: IfNotPresent
     secrets:
@@ -23,6 +23,7 @@ securityfachade:
     externalPort: 8080
     internalPort: 8080
 
+comment:
 podAnnotations: {}
 application:
   track: latest
