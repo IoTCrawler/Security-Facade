@@ -8,7 +8,7 @@ deploymentApiVersion: apps/v1
 securityfachade:
   name: security-fachade
   image:
-    repository: security-fachade-local
+    repository: gitlab.iotcrawler.net:4567/xacml/security-fachade/master
     tag: latest
     pullPolicy: IfNotPresent
     secrets:
