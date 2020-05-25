@@ -52,11 +52,25 @@ spec:
           name: security-configmap
           items:
           - key: network_configuration.json
-            path: network_configuration.json
+            path: config/network_configuration.json
           - key: configuration.json
-            path: configuration.json
+            path: config/configuration.json
           - key: app_configuration.json
-            path: app_configuration.json
+            path: config/app_configuration.json
+          - key: ca.odins.es.jks
+            path: certs/ca.odins.es.jks
+          - key: cliente.iotcrawler.org.jks
+            path: certs/cliente.iotcrawler.org.jks
+          - key: iotcrawler.odins.es.jks
+            path: certs/iotcrawler.odins.es.jks
+          - key: servidor.iotcrawler.org_cert.pem
+            path: certs/servidor.iotcrawler.org_cert.pem
+          - key: servidor.iotcrawler.org_privkey.pem
+            path: certs/servidor.iotcrawler.org_privkey.pem
+          - key: trust_store.jks
+            path: certs/trust_store.jks
+          - key: server.xml
+            path: server.xml
       imagePullSecrets:
 {{ toYaml .Values.securityfachade.image.secrets | indent 10 }}
       containers:
@@ -73,7 +87,7 @@ spec:
           value: /usr/local/tomcat/conf/configuration_files
         volumeMounts:
         - name: configs
-          mountPath: /usr/local/tomcat/conf/configuration_files/config
+          mountPath: /usr/local/tomcat/conf/configuration_files
         ports:
         - name: "{{ .Values.securityfachade.service.name }}"
           containerPort: {{ .Values.securityfachade.service.internalPort }}
