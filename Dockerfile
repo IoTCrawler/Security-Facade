@@ -20,6 +20,7 @@ WORKDIR /root/git_projects
 COPY Java_CapabilityManagerServlet ./Java_CapabilityManagerServlet
 COPY Java_CapabilityTokens ./Java_CapabilityTokens
 COPY XACML_HTTPClient ./XACML_HTTPClient
+COPY configuration_files/ ./configuration_files
 
 WORKDIR /root/git_projects/XACML_HTTPClient
 RUN mvn -U clean install
@@ -34,7 +35,9 @@ RUN mvn -U clean install
 RUN ls -lah target
 RUN mv ./target/CapabilityManagerServlet-0.0.2-SNAPSHOT.war /usr/local/tomcat/webapps/CapabilityManagerServlet.war
 
-COPY configuration_files/ /usr/local/tomcat/conf/configuration_files
+WORKDIR /root/git_projects/
+RUN mkdir -p /usr/local/tomcat/conf/configuration_files/
+RUN mv ./configuration_files/* /usr/local/tomcat/conf/configuration_files/
 
 WORKDIR /root/
 RUN rm -rf git_projects
