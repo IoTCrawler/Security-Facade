@@ -36,8 +36,8 @@ RUN ls -lah target
 RUN mv ./target/CapabilityManagerServlet-0.0.2-SNAPSHOT.war /usr/local/tomcat/webapps/CapabilityManagerServlet.war
 
 WORKDIR /root/git_projects/
-RUN mkdir -p /usr/local/tomcat/conf/configuration_files/
-RUN mv ./configuration_files/* /usr/local/tomcat/conf/configuration_files/
+RUN mkdir -p /usr/local/tomcat/webapps/configuration_files/
+RUN mv ./configuration_files/* /usr/local/tomcat/webapps/configuration_files/
 
 WORKDIR /root/
 RUN rm -rf git_projects
