@@ -1,4 +1,4 @@
-{{- if .Values.comment }}
+{{- if .Values.securityfachade.configmap }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

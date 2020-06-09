@@ -45,7 +45,7 @@ spec:
         service: {{ .Values.securityfachade.service.name }}
     
     spec:
-    {{- if .Values.comment }}
+    {{- if .Values.securityfachade.configmap }}
       volumes:
       - name: configs
         configMap:
@@ -87,7 +87,7 @@ spec:
         env:
         - name: CAPMANAGER_CONFIG_FOLDER
           value: /usr/local/tomcat/conf/configuration_files
-        {{- if .Values.comment }}
+        {{- if .Values.securityfachade.configmap }}
         volumeMounts:
         - name: configs
           mountPath: /usr/local/tomcat/conf/configuration_files

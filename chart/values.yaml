@@ -22,8 +22,7 @@ securityfachade:
     commonName:
     externalPort: 8080
     internalPort: 8080
-
-comment: false
+  configmap: true
 podAnnotations: {}
 application:
   track: latest
