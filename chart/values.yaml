@@ -23,7 +23,7 @@ securityfachade:
     externalPort: 8080
     internalPort: 8080
 
-comment:
+comment: false
 podAnnotations: {}
 application:
   track: latest

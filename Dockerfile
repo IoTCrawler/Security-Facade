@@ -9,7 +9,7 @@ FROM  tomcat as maven
 RUN apt update
 RUN apt install -y maven git
 
-FROM maven
+from maven
 
 WORKDIR /root
 RUN  mkdir git_projects
@@ -20,7 +20,6 @@ WORKDIR /root/git_projects
 COPY Java_CapabilityManagerServlet ./Java_CapabilityManagerServlet
 COPY Java_CapabilityTokens ./Java_CapabilityTokens
 COPY XACML_HTTPClient ./XACML_HTTPClient
-COPY configuration_files ./configuration_files
 
 WORKDIR /root/git_projects/XACML_HTTPClient
 RUN mvn -U clean install
@@ -35,10 +34,7 @@ RUN mvn -U clean install
 RUN ls -lah target
 RUN mv ./target/CapabilityManagerServlet-0.0.2-SNAPSHOT.war /usr/local/tomcat/webapps/CapabilityManagerServlet.war
 
-WORKDIR /root/git_projects/
-RUN mkdir -p /usr/local/tomcat/webapps/configuration_files/
-RUN cp -R ./configuration_files /usr/local/tomcat/conf/
-
 WORKDIR /root/
-#RUN rm -rf git_projects
+RUN rm -rf git_projects
 RUN rm -rf /root/.ssh
+
