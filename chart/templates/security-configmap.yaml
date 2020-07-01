@@ -15,18 +15,19 @@ data:
 {{ .Files.Get "config/configuration.json" | indent 4 }}
   app_configuration.json: |
 {{ .Files.Get "config/app_configuration.json" | indent 4 }}
+  servidor.iotcrawler.org_cert.pem: |
+{{ .Files.Get "certs/servidor.iotcrawler.org_cert.pem" | indent 4 }}
+  servidor.iotcrawler.org_privkey.pem: |
+{{ .Files.Get "certs/servidor.iotcrawler.org_privkey.pem" | indent 4 }}
+  server.xml: |
+{{ .Files.Get "server.xml" | indent 4 }}
+binaryData:
   ca.odins.es.jks: |
 {{ .Files.Get "certs/ca.odins.es.jks" | b64enc | indent 4 }}
   cliente.iotcrawler.org.jks: |
 {{ .Files.Get "certs/cliente.iotcrawler.org.jks" | b64enc | indent 4 }}
   iotcrawler.odins.es.jks: |
 {{ .Files.Get "certs/iotcrawler.odins.es.jks" | b64enc | indent 4 }}
-  servidor.iotcrawler.org_cert.pem: |
-{{ .Files.Get "certs/servidor.iotcrawler.org_cert.pem" | indent 4 }}
-  servidor.iotcrawler.org_privkey.pem: |
-{{ .Files.Get "certs/servidor.iotcrawler.org_privkey.pem" | indent 4 }}
   trust_store.jks: |
 {{ .Files.Get "certs/trust_store.jks" | b64enc | indent 4 }}
-  server.xml: |
-{{ .Files.Get "server.xml" | indent 4 }}
 {{- end }}
