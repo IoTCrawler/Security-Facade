@@ -14,18 +14,18 @@ metadata:
 spec:
   tls:
   - hosts:
-    - xacml-security-fachade.35.241.228.250.nip.io
-    - le-58.35.241.228.250.nip.io
-    secretName: security-fachade-tls
+    {{ if eq .Values.gitlab.env "staging" }}
+    - staging.security-facade.iotcrawler.eu
+    {{ else }}
+    - security-facade.iotcrawler.eu
+    {{ end }}
+    secretName: security-facade-{{ .Values.gitlab.env }}-tls22
   rules:
-  - host: xacml-security-fachade.35.241.228.250.nip.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: {{ .Values.securityfachade.service.name }}
-          servicePort: {{ .Values.securityfachade.service.internalPort }}
-  - host: le-58.35.241.228.250.nip.io
+  {{ if eq .Values.gitlab.env "staging" }}
+  - host: staging.security-facade.iotcrawler.eu
+  {{ else }}
+  - host: security-facade.iotcrawler.eu
+  {{ end }}
     http:
       paths:
       - path: /
