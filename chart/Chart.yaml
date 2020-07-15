@@ -1,4 +1,4 @@
 apiVersion: v1
-description: Securtiy Fachade Helm chart
-name: security-fachade
+description: Securtiy Facade Helm chart
+name: security-facade
 version: 0.0.1
