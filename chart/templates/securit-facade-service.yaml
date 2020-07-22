@@ -6,20 +6,20 @@ metadata:
     track: "{{ .Values.application.track }}"
     tier: "{{ .Values.application.tier }}"
     release: {{ .Release.Name }}
-    service: {{ .Values.securityfachade.service.name }}
-  name: {{ .Values.securityfachade.service.name }}
+    service: {{ .Values.securityfacade.service.name }}
+  name: {{ .Values.securityfacade.service.name }}
 spec:
-  type: {{ .Values.securityfachade.service.type }}
+  type: {{ .Values.securityfacade.service.type }}
   ports:
-  - port: {{ .Values.securityfachade.service.externalPort }}
-    targetPort: {{ .Values.securityfachade.service.internalPort }}
+  - port: {{ .Values.securityfacade.service.externalPort }}
+    targetPort: {{ .Values.securityfacade.service.internalPort }}
     protocol: TCP
-    name: {{ .Values.securityfachade.service.name }}
+    name: {{ .Values.securityfacade.service.name }}
   selector:
     app: {{ template "appname" . }}
     track: "{{ .Values.application.track }}"
     tier: "{{ .Values.application.tier }}"
     release: {{ .Release.Name }}
-    service: {{ .Values.securityfachade.service.name }}
+    service: {{ .Values.securityfacade.service.name }}
 status:
   loadBalancer: {}

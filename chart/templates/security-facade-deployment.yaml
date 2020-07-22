@@ -12,7 +12,7 @@ metadata:
     tier: "{{ .Values.application.tier }}"
     chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
     release: {{ .Release.Name }}
-    service: {{ .Values.securityfachade.service.name }}
+    service: {{ .Values.securityfacade.service.name }}
 spec:
 {{- if or .Values.enableSelector (eq (default "extensions/v1beta1" .Values.deploymentApiVersion) "apps/v1") }}
   selector:
@@ -21,7 +21,7 @@ spec:
       track: "{{ .Values.application.track }}"
       tier: "{{ .Values.application.tier }}"
       release: {{ .Release.Name }}
-      service: {{ .Values.securityfachade.service.name }}
+      service: {{ .Values.securityfacade.service.name }}
 {{- end }}
   replicas: {{ .Values.replicaCount }}
 {{- if .Values.strategyType }}
@@ -42,10 +42,10 @@ spec:
         track: "{{ .Values.application.track }}"
         tier: "{{ .Values.application.tier }}"
         release: {{ .Release.Name }}
-        service: {{ .Values.securityfachade.service.name }}
+        service: {{ .Values.securityfacade.service.name }}
     
     spec:
-    {{- if .Values.securityfachade.configmap }}
+    {{- if .Values.securityfacade.configmap }}
       volumes:
       - name: configs
         configMap:
@@ -74,11 +74,11 @@ spec:
             path: server.xml
     {{end}}
       imagePullSecrets:
-{{ toYaml .Values.securityfachade.image.secrets | indent 10 }}
+{{ toYaml .Values.securityfacade.image.secrets | indent 10 }}
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.securityfachade.image.repository }}:{{ .Values.securityfachade.image.tag }}"
-        imagePullPolicy: {{ .Values.securityfachade.image.pullPolicy }}
+        image: "{{ .Values.securityfacade.image.repository }}:{{ .Values.securityfacade.image.tag }}"
+        imagePullPolicy: {{ .Values.securityfacade.image.pullPolicy }}
 	{{- if .Values.application.secretName }}
         envFrom:
         - secretRef:
@@ -87,23 +87,23 @@ spec:
         env:
         - name: CAPMANAGER_CONFIG_FOLDER
           value: /usr/local/tomcat/conf/configuration_files
-        {{- if .Values.securityfachade.configmap }}
+        {{- if .Values.securityfacade.configmap }}
         volumeMounts:
         - name: configs
           mountPath: /usr/local/tomcat/conf/configuration_files
         {{end}}
         ports:
-        - name: "{{ .Values.securityfachade.service.name }}"
-          containerPort: {{ .Values.securityfachade.service.internalPort }}
+        - name: "{{ .Values.securityfacade.service.name }}"
+          containerPort: {{ .Values.securityfacade.service.internalPort }}
         livenessProbe:
 {{- if eq .Values.livenessProbe.probeType "httpGet" }}
           httpGet:
             path: {{ .Values.livenessProbe.path }}
             scheme: {{ .Values.livenessProbe.scheme }}
-            port: {{ .Values.securityfachade.service.internalPort }}
+            port: {{ .Values.securityfacade.service.internalPort }}
 {{- else if eq .Values.livenessProbe.probeType "tcpSocket" }}
           tcpSocket:
-            port: {{ .Values.securityfachade.service.internalPort }}
+            port: {{ .Values.securityfacade.service.internalPort }}
 {{- else if eq .Values.livenessProbe.probeType "exec" }}
           exec:
             command:
@@ -116,10 +116,10 @@ spec:
           httpGet:
             path: {{ .Values.readinessProbe.path }}
             scheme: {{ .Values.readinessProbe.scheme }}
-            port: {{ .Values.securityfachade.service.internalPort }}
+            port: {{ .Values.securityfacade.service.internalPort }}
 {{- else if eq .Values.readinessProbe.probeType "tcpSocket" }}
           tcpSocket:
-            port: {{ .Values.securityfachade.service.internalPort }}
+            port: {{ .Values.securityfacade.service.internalPort }}
 {{- else if eq .Values.readinessProbe.probeType "exec" }}
           exec:
             command:

@@ -28,7 +28,7 @@
   },
   "capmanager": {
     "protocol": "http",
-    "address": "security.security-fachade-58-production",
+    "address": "security.security-facade-58-production",
     "port": "8080",
     "services": [
       {

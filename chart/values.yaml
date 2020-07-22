@@ -5,14 +5,14 @@ replicaCount: 1
 strategyType:
 enableSelector:
 deploymentApiVersion: apps/v1
-securityfachade:
-  name: security-fachade
+securityfacade:
+  name: security-facade
   image:
-    repository: gitlab.iotcrawler.net:4567/xacml/security-fachade/master
+    repository: gitlab.iotcrawler.net:4567/xacml/security-facade/master
     tag: latest
     pullPolicy: IfNotPresent
     secrets:
-    - name: gitlab-registry
+    - name: gitlab-registry-xacml-security-facade
   service:
     enabled: true
     annotations: {}
