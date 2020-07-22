@@ -1,8 +1,3 @@
-# License
-
-Security Facade Project source code files are made avaialable under the Apache License, Version 2.0 (Apache-2.0), located into the LICENSE file.
-
-
 # Introduction
 
 This component has been designed as an endpoint for performing both authentication and authorisation operations in a transparent way for the requester.
@@ -83,3 +78,7 @@ curl --location --request POST 'https://<Facade-IP>:<Facade-Port>/CapabilityMana
 - device: endpoint of the resource’s request (protocol+IP+PORT).
 - action: method of the resource’s request ("POST", "GET", "PATCH"...).
 - resource: path of the resource request.
+
+# License
+
+Security Facade Project source code files are made avaialable under the Apache License, Version 2.0 (Apache-2.0), located into the [LICENSE](LICENSE) file.
