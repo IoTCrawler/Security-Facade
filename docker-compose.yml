@@ -6,8 +6,8 @@
 
 version: "3.5"
 services:
-  securityfachade:
-    image: iotcrawler/securityfachade
+  securityfacade:
+    image: iotcrawler/securityfacade
     logging:
       driver: "json-file"
       options:

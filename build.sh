@@ -6,4 +6,4 @@
 
 #!/bin/bash
 
-docker build -t iotcrawler/securityfachade ./
+docker build -t iotcrawler/securityfacade ./
