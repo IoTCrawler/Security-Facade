@@ -69,8 +69,11 @@ public class ObtainCapabilityTokenIdemixVerification extends HttpServlet
      * Default constructor. 
      */
     public ObtainCapabilityTokenIdemixVerification() {
-		pdpEntity 	= new NetworkEntity(configurationFolderPath+"/config/network_configuration.json", "capmanager");
+		pdpEntity 	= new NetworkEntity(configurationFolderPath+"/config/network_configuration.json", "pdp");
 		idemixEntity= new NetworkEntity(configurationFolderPath+"/config/network_configuration.json", "idemix");
+		System.out.println("PDP Entity: " + pdpEntity);
+		System.out.println("Idemix Entity: " + idemixEntity);
+
     }
 
 	/**
@@ -89,7 +92,6 @@ public class ObtainCapabilityTokenIdemixVerification extends HttpServlet
 	{
 
     	String configFile = configurationFolderPath+"/config/configuration.json";		
-    	String net_configFile = configurationFolderPath+"/config/network_configuration.json";
     	this.configuration = Read4mFile.readJSONFile(configFile);
 		
 
@@ -187,7 +189,9 @@ public class ObtainCapabilityTokenIdemixVerification extends HttpServlet
         PdpClient pdpClient= new PdpClient(
                 // The / at the end of the URL is FREAKING IMPORTANT!!!! otherwise you get an 302 Message
                 new URL( pdpEntity.getURL("getPDPdecision").toString() )
-        );		try {
+        );		
+        try {
+        	System.out.println("PDP URL: "+ pdpEntity.getURL("getPDPdecision").toString());
         	//     public static String getXACMLRequest(String subjectId, String xacml_resource, String action) {
 
 			boolean result = pdpClient.requestPDPDecision(userName4mIdemixToken, device+resource, action);

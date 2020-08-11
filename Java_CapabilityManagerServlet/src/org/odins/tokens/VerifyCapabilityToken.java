@@ -100,7 +100,7 @@ public class VerifyCapabilityToken extends HttpServlet {
 
 		// Evaluating external capability tokens.
 		CapabilityToken ct = CapabilityToken.getCapabilityTokenFromString(captoken);
-		CapabilityEvaluator ce = new CapabilityEvaluator(configurationFolderPath,"config/configuration.json", ct);
+		CapabilityEvaluator ce = new CapabilityEvaluator(configurationFolderPath,"/config/configuration.json", ct);
 		CapabilityVerifierCode code  = ce.evaluateCapabilityToken(action, resource, device);
 		
 		response.getWriter().append( code.toString() );
