@@ -62,9 +62,10 @@ public class SimpleHTTPSClient
 	
 	public String getIdemixToken(String UserInfo, String root, String configurationPath) throws IOException, NoSuchAlgorithmException, KeyManagementException {
 		
-		System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
+    System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
+    System.out.println("after URL: ");
 		URL url = idemixEntity.getURL("getToken");
-		
+		System.out.println("Before create ssl: ");
 		SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
 		HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
