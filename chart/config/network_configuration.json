@@ -17,7 +17,7 @@
   },
   "idemix": {
     "protocol": "https",
-    "address": "155.54.95.170",
+    "address": "keyrock.iotcrawler.eu",
     "port": "443",
     "services": [
       {
