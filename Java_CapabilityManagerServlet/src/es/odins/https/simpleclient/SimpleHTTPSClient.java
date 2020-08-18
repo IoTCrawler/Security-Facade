@@ -63,9 +63,7 @@ public class SimpleHTTPSClient
 	public String getIdemixToken(String UserInfo, String root, String configurationPath) throws IOException, NoSuchAlgorithmException, KeyManagementException {
 		
     System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
-    System.out.println("after URL: ");
 		URL url = idemixEntity.getURL("getToken");
-		System.out.println("Before create ssl: ");
 		SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
 		HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
 		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
@@ -74,14 +72,11 @@ public class SimpleHTTPSClient
 		con.setDoOutput(true);		
 		con.setRequestProperty("Content-Type", "application/json");
 		
-    System.out.println("Before output stream : " + con.getSSLSocketFactory());
 		  try(OutputStream os = con.getOutputStream()) {
 			    byte[] input = UserInfo.getBytes("utf-8");
 			    os.write(input, 0, input.length);           
 			}  
-      System.out.println("Before connection factory: " + con.getSSLSocketFactory());
 		  con.connect();
-      System.out.println("After connection res code: " + con.getResponseCode());
 		  if(con.getResponseCode() == 401) {
 			  System.out.println("There was an error getting the token: Response code - 401");
 			  return null;
