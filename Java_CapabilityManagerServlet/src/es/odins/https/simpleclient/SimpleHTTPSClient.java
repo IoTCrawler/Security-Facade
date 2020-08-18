@@ -73,7 +73,7 @@ public class SimpleHTTPSClient
 		con.setDoOutput(true);		
 		con.setRequestProperty("Content-Type", "application/json");
 		
-	
+    System.out.println("Before output stream : " + con.getSSLSocketFactory());
 		  try(OutputStream os = con.getOutputStream()) {
 			    byte[] input = UserInfo.getBytes("utf-8");
 			    os.write(input, 0, input.length);           
