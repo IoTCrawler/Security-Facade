@@ -80,7 +80,6 @@ public class SimpleHTTPSClient
 			}  
       System.out.println("Before connection factory: " + con.getSSLSocketFactory());
 		  con.connect();
-      System.out.println("After connection ssl session: " + con.getSSLSession());
       System.out.println("After connection res code: " + con.getResponseCode());
 		  if(con.getResponseCode() == 401) {
 			  System.out.println("There was an error getting the token: Response code - 401");
