@@ -26,3 +26,9 @@ services:
       - ./configuration_files:/usr/local/tomcat/conf/configuration_files
     environment:
       - CAPMANAGER_CONFIG_FOLDER=/usr/local/tomcat/conf/configuration_files
+
+      #disable_certs_idm : Disable certs ssl validation IDM. Optional Parameter. Use only in test environment. Admittable values:
+      # 0-Use certs ssl validation
+      # 1-Disable
+      # Default value : 0 
+      - disable_certs_idm=1

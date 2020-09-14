@@ -22,7 +22,12 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import es.odins.util.IOmanagement;
+
+import java.net.MalformedURLException;
 
 public class SimpleHTTPSClient
 {
@@ -60,94 +65,153 @@ public class SimpleHTTPSClient
 	    });
 	}
 	
+	public void disableCertificates() {
+	    TrustManager[] trustAllCerts = new TrustManager[]{
+	        (TrustManager) new X509TrustManager() {
+
+	            @Override
+	            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+	                return null;
+	            }
+
+	            @Override
+	            public void checkClientTrusted(
+	                    java.security.cert.X509Certificate[] certs, String authType) {
+	            }
+
+	            @Override
+	            public void checkServerTrusted(
+	                    java.security.cert.X509Certificate[] certs, String authType) {
+	            }
+	        }
+	    };
+
+	    // Install the all-trusting trust manager
+	    try {
+	        SSLContext sc = SSLContext.getInstance("SSL");
+	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
+	        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+	    } catch (Exception e) {
+	    }
+	}
+
 	public String getIdemixToken(String UserInfo, String root, String configurationPath) throws IOException, NoSuchAlgorithmException, KeyManagementException {
 		
-    System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
-		URL url = idemixEntity.getURL("getToken");
-		SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
-		HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
-		HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+		try {
 
-		con.setRequestMethod("POST");
-		con.setDoOutput(true);		
-		con.setRequestProperty("Content-Type", "application/json");
-		
-		  try(OutputStream os = con.getOutputStream()) {
-			    byte[] input = UserInfo.getBytes("utf-8");
-			    os.write(input, 0, input.length);           
-			}  
-		  con.connect();
-		  if(con.getResponseCode() == 401) {
-			  System.out.println("There was an error getting the token: Response code - 401");
-			  return null;
-		  }
-		  
-		  
-		  Map<String, List<String>> map = con.getHeaderFields();
+			System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
 
-		  for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-			  	System.out.println("Key : " + entry.getKey() + 
-		                 " ,Value : " + entry.getValue());
+			URL url = idemixEntity.getURL("getToken");
+
+			String disable_certs_idm = (System.getenv("disable_certs_idm") != null) ? System.getenv("disable_certs_idm") : "0";
+
+			if(disable_certs_idm.equals("1")) {
+
+				disableCertificates(); //added
+			}
+			else {
+				SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
+				HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
+
+			}	
+
+			HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+
+			con.setRequestMethod("POST");
+			con.setDoOutput(true);		
+			con.setRequestProperty("Content-Type", "application/json");
+			
+			try(OutputStream os = con.getOutputStream()) {
+					byte[] input = UserInfo.getBytes("utf-8");
+					os.write(input, 0, input.length);           
 			}
 
-		  String token = con.getHeaderField("X-Subject-Token");
-		  		System.out.println( "Token: " + token);
-  
-		  
-		  try(BufferedReader br = new BufferedReader(
-				  new InputStreamReader(con.getInputStream(), "utf-8"))) {
-				    StringBuilder response = new StringBuilder();
-				    String responseLine = null;
-				    while ((responseLine = br.readLine()) != null) {
-				        response.append(responseLine.trim());
-				    }
-				    System.out.println(response.toString());
+			con.connect();
+
+			if(con.getResponseCode() == 401) {
+				System.out.println("There was an error getting the token: Response code - 401");
+				return null;
+			}
+						
+			Map<String, List<String>> map = con.getHeaderFields();
+
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+					System.out.println("Key : " + entry.getKey() + 
+							" ,Value : " + entry.getValue());
 				}
 
-		  
-		con.disconnect();
+			String token = con.getHeaderField("X-Subject-Token");
+					System.out.println( "Token: " + token);
+	
+			
+			try(BufferedReader br = new BufferedReader(
+					new InputStreamReader(con.getInputStream(), "utf-8"))) {
+						StringBuilder response = new StringBuilder();
+						String responseLine = null;
+						while ((responseLine = br.readLine()) != null) {
+							response.append(responseLine.trim());
+						}
+						System.out.println(response.toString());
+					}
 
-		return token;
+			con.disconnect();
+
+			return token;
+
+		} catch (MalformedURLException e) {
+		     e.printStackTrace();
+	    } catch (IOException e) {
+		     e.printStackTrace();
+	    }
+		
+		return null;
 		
 	}
 	
 	public static String getCapabilityToken(String root, String configurationPath, String idemixToken, String action, String resource, String device) throws KeyManagementException, NoSuchAlgorithmException, IOException 
 	{
+		try {
 		
-		System.out.println("getcapabilityManagerURL: " + capmanagerEntity.getURL("generate") );
+			System.out.println("getcapabilityManagerURL: " + capmanagerEntity.getURL("generate") );
 
-		SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
-		HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
-		HttpsURLConnection con = (HttpsURLConnection) capmanagerEntity.getURL("generate").openConnection();
+			SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
+			HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
+			HttpsURLConnection con = (HttpsURLConnection) capmanagerEntity.getURL("generate").openConnection();
+			
+			con.setRequestMethod("POST");
+			con.setDoOutput(true);
+			
+			con.setRequestProperty("action"			, action);
+			con.setRequestProperty("resource"		, resource);
+			con.setRequestProperty("device"			, device);
+			con.setRequestProperty("idemix-token"	, idemixToken);
 
+			con.connect();
+			
+			String token = "";  
+			try(BufferedReader br = new BufferedReader(
+					new InputStreamReader(con.getInputStream(), "utf-8"))) {
+						StringBuilder response = new StringBuilder();
+						String responseLine = null;
+						while ((responseLine = br.readLine()) != null) {
+							response.append(responseLine.trim());
+						}
+						//System.out.println(response.toString());
+						token += response.toString();
+					}
+			
+			con.disconnect();
+
+			return token;
+			
+		} catch (MalformedURLException e) {
+		     e.printStackTrace();
+	    } catch (IOException e) {
+		     e.printStackTrace();
+	    }
 		
-		con.setRequestMethod("POST");
-		con.setDoOutput(true);
+		return null;
 		
-		con.setRequestProperty("action"			, action);
-		con.setRequestProperty("resource"		, resource);
-		con.setRequestProperty("device"			, device);
-		con.setRequestProperty("idemix-token"	, idemixToken);
-		
-
-		  con.connect();
-		  
-		  
-		  String token = "";  
-		  try(BufferedReader br = new BufferedReader(
-				  new InputStreamReader(con.getInputStream(), "utf-8"))) {
-				    StringBuilder response = new StringBuilder();
-				    String responseLine = null;
-				    while ((responseLine = br.readLine()) != null) {
-				        response.append(responseLine.trim());
-				    }
-				    //System.out.println(response.toString());
-				    token += response.toString();
-				}
-
-		  
-		con.disconnect();
-		return token;
 	}
 	
 	public static String verifyCapabilityToken(String capToken, String action, String resource, String device) throws KeyManagementException, NoSuchAlgorithmException, IOException 
