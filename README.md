@@ -2,20 +2,38 @@
 
 This component has been designed as an endpoint for performing both authentication and authorisation operations in a transparent way for the requester.
 
-# Configuration network_configuration.json file
+# Configuration files
 
-Before launching the project, it's necessary to review the blockchain.conf file:
+Before launching the project, it's necessary to review:
 
-```sh
-cd projectPath / configuration_files  / config
-vi network_configuration.json
-```
+- app_configuration.json file. This file contains keystore and truststore files configuration. Required to SSL certificates.
 
-This file contains the endpoints that Security Facade requires PEP-Proxy, XACML-PDP, IdM-Keyrock and itself.
+	```sh
+	cd projectPath / configuration_files  / config
+	vi app_configuration.json
+	```
+
+- configuration.json file. This a second file which contains keystore and truststore files configuration. Required to SSL certificates.
+
+	```sh
+	cd projectPath / configuration_files / config
+	vi configuration.json
+	```
+
+- network_configuration.json file. This file contains the endpoints that Security Facade requires PEP-Proxy, XACML-PDP, IdM-Keyrock and itself.
+
+	```sh
+	cd projectPath / configuration_files  / config
+	vi network_configuration.json
+	```
+
+NOTE: You must be sure that corresponding keystore and truststore files are included in projectPath / configuration_files  / certs folder. 
 
 # Configuration docker-compose.yml file
 
 There isn't any additional required configuration in this file.
+
+Optionally, only for testing environments, you can disable using disable_certs variable the SSL certificates validation from Security Facade component to IdM-Keyrock one.
 
 # Prerequisites
 

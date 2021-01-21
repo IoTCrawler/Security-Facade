@@ -145,7 +145,7 @@ public class ObtainCapabilityTokenParametrized extends HttpServlet
 
 		System.out.println("Acceding the Idemix Component through the URL " + idemixEntity.getURL("getToken"));
 		
-	    String userInfo = new HttpsClient().getInfo4mToken( idemixEntity.getURL("getToken").toString() , idemixToken);		
+	    String userInfo = new HttpsClient(configurationFolderPath+"/config/network_configuration.json").getInfo4mToken(configurationFolderPath, app_configFile, idemixToken);		
 
 	    if(userInfo.equals("") || userInfo == null) {
 			response.getWriter().append("There was an error getting the Token.");

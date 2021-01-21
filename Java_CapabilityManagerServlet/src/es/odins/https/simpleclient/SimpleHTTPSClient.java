@@ -103,13 +103,14 @@ public class SimpleHTTPSClient
 
 			URL url = idemixEntity.getURL("getToken");
 
-			String disable_certs_idm = (System.getenv("disable_certs_idm") != null) ? System.getenv("disable_certs_idm") : "0";
+			String disable_certs = (System.getenv("disable_certs") != null) ? System.getenv("disable_certs") : "0";
 
-			if(disable_certs_idm.equals("1")) {
+			if(disable_certs.equals("1")) {
 
 				disableCertificates(); //added
 			}
 			else {
+
 				SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
 				HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
 
@@ -168,15 +169,26 @@ public class SimpleHTTPSClient
 		
 	}
 	
-	public static String getCapabilityToken(String root, String configurationPath, String idemixToken, String action, String resource, String device) throws KeyManagementException, NoSuchAlgorithmException, IOException 
+	public String getCapabilityToken(String root, String configurationPath, String idemixToken, String action, String resource, String device) throws KeyManagementException, NoSuchAlgorithmException, IOException 
 	{
 		try {
 		
 			System.out.println("getcapabilityManagerURL: " + capmanagerEntity.getURL("generate") );
 
-			SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
-			HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
-			HttpsURLConnection con = (HttpsURLConnection) capmanagerEntity.getURL("generate").openConnection();
+			URL url = capmanagerEntity.getURL("generate");
+			
+			String disable_certs = (System.getenv("disable_certs") != null) ? System.getenv("disable_certs") : "0";
+
+			if(disable_certs.equals("1")) {
+
+				disableCertificates(); //added
+			}
+			else {
+				SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
+				HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());				
+			}
+
+			HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
 			
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);

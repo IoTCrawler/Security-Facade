@@ -20,7 +20,7 @@ import es.odins.util.IOmanagement;
 
 public class NetworkEntity {
 
-		String address, port, protocol;
+		public String address, port, protocol;
 		Map<String,String> services = null;
 
 		public NetworkEntity( String JSONfile, String entityNameEntry) {

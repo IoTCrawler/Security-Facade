@@ -21,8 +21,12 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import es.odins.https.simpleclient.MySSLContext;
+import es.odins.https.simpleclient.NetworkEntity;
+
 public class HttpsClient {
 
+/*
 	static {
 	    //for localhost testing only
 	    javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
@@ -37,8 +41,41 @@ public class HttpsClient {
 	        }
 	    });
 	}
+*/	
+
+	public  static NetworkEntity idemixEntity 		= null; 
+	public  static NetworkEntity fiwarePEPEntity 	= null; 
+	public  static NetworkEntity capmanagerEntity 	= null;
 	
+	static {
 	
+	}
+
+
+	public HttpsClient(String configurationPath) {	
+	
+		//this.configurationPath 	= configurationPath;	
+		System.out.println("Creating HTTPSClient: Configuration file - " + configurationPath);
+		idemixEntity 		= new NetworkEntity(configurationPath, "idemix");
+		fiwarePEPEntity 	= new NetworkEntity(configurationPath, "fiwarePEP");
+		capmanagerEntity 	= new NetworkEntity(configurationPath, "capmanager");
+	
+		//for localhost testing only
+	    javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
+	    new javax.net.ssl.HostnameVerifier(){
+	        public boolean verify(String hostname,
+	                javax.net.ssl.SSLSession sslSession) {
+				if (hostname.equals(idemixEntity.address) || 
+	            	hostname.equals(fiwarePEPEntity.address)||
+	            	hostname.equals(capmanagerEntity.address)) {
+	                return true;
+	            }
+				return false;
+			}
+	    });
+	}
+
+
 	public void disableCertificates() {
 	    TrustManager[] trustAllCerts = new TrustManager[]{
 	        (TrustManager) new X509TrustManager() {
@@ -69,39 +106,50 @@ public class HttpsClient {
 	    }
 	}
 
-	public String getIdemixAuthToken(String URL, String body){
+	public String getIdemixAuthToken(String root, String configurationPath, String body){
 
-	
-	      URL url;
-	      try {
-      	     disableCertificates();
-		     url = new URL(URL);
-		     
-		     
-		     HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+	    try {
+			
+			System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
 
-		     // Add headers
-		     connection.setRequestMethod("POST");
-		     connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
+			URL url = idemixEntity.getURL("getToken");
 
-		     connection.setDoOutput(true);
-		     OutputStream outStream = connection.getOutputStream();
-		     OutputStreamWriter outStreamWriter = new OutputStreamWriter(outStream, "UTF-8");
-		     outStreamWriter.write(body);
-		     outStreamWriter.flush();
-		     outStreamWriter.close();
-		     outStream.close();
+		    String disable_certs = (System.getenv("disable_certs") != null) ? System.getenv("disable_certs") : "0";
+
+			if(disable_certs.equals("1")) {
+
+				disableCertificates(); //added
+			}
+			else {
+
+				SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
+				HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());
+			}
+		     
+		    HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
+
+		    // Add headers
+		    connection.setRequestMethod("POST");
+		    connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
+
+		    connection.setDoOutput(true);
+		    OutputStream outStream = connection.getOutputStream();
+		    OutputStreamWriter outStreamWriter = new OutputStreamWriter(outStream, "UTF-8");
+		    outStreamWriter.write(body);
+		    outStreamWriter.flush();
+		    outStreamWriter.close();
+		    outStream.close();
 		     
 		     
 		     
-		     //dumpl all cert info
-		     print_https_cert(connection);
+		    //dumpl all cert info
+		    print_https_cert(connection);
 				
-		     //dump all the content
-		     print_content(connection);
+		    //dump all the content
+		    print_content(connection);
 				
-		     System.out.println(connection.getResponseMessage());
-		     System.out.println(connection.getResponseCode());
+		    System.out.println(connection.getResponseMessage());
+		    System.out.println(connection.getResponseCode());
 
 		 	//get all headers
 		 	Map<String, List<String>> map = connection.getHeaderFields();
@@ -123,30 +171,42 @@ public class HttpsClient {
 	   }
 		
 
-    public String getInfo4mToken(String URL,String token){
+    public String getInfo4mToken(String root, String configurationPath, String token){
 
-
-	      URL url;
 	      try {
-      	     disableCertificates();
-		     url = new URL(URL);
-		     
-		     
-		     HttpsURLConnection connection = (HttpsURLConnection)url.openConnection();
 
-		     // Add headers
-		     connection.setRequestMethod("GET");
-		     //connection.setRequestProperty("Content-Type"	, "application/json"); // We send our data in JSON format
-		     connection.setRequestProperty("x-subject-token", token); // We send our data in JSON format
-		     connection.setRequestProperty("x-auth-token"	, token); // We send our data in JSON format
+			System.out.println("Idemix URL: " + idemixEntity.getURL("getToken") );
+
+			URL url = idemixEntity.getURL("getToken");
+
+			 
+			String disable_certs = (System.getenv("disable_certs") != null) ? System.getenv("disable_certs") : "0";
+
+			if(disable_certs.equals("1")) {
+
+				disableCertificates(); //added
+			}
+			else {
+
+				SSLContext sslctx = MySSLContext.createSSLContext(root, configurationPath);
+				HttpsURLConnection.setDefaultSSLSocketFactory(sslctx.getSocketFactory());	
+			}
 		     
-		     //dumpl all cert info
-		     print_https_cert(connection);
+		    HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+		    // Add headers
+		    connection.setRequestMethod("GET");
+		    //connection.setRequestProperty("Content-Type"	, "application/json"); // We send our data in JSON format
+		    connection.setRequestProperty("x-subject-token", token); // We send our data in JSON format
+		    connection.setRequestProperty("x-auth-token"	, token); // We send our data in JSON format
+		     
+		    //dumpl all cert info
+		    print_https_cert(connection);
 		 	String responseBody = get_content(connection);
 
 		     
-		     System.out.println(connection.getResponseMessage());
-		     System.out.println(connection.getResponseCode());
+		    System.out.println(connection.getResponseMessage());
+		    System.out.println(connection.getResponseCode());
 
 		 	//get all headers
 		 	Map<String, List<String>> map = connection.getHeaderFields();
@@ -258,18 +318,27 @@ public class HttpsClient {
 	   public static void main(String[] args)
 	   {
 
-		   String body = "{\n" + 
+		   	String body = "{\n" + 
 				  		"    \"name\": \"testuser@odins.es\",\n" + 
 				  		"    \"password\": \"1234\"\n" + 
 				  		"}";
-				   
-	        String token 	= new HttpsClient().getIdemixAuthToken(body);
+
+			NetworkEntity idemixEntity 		= null;
+
+			public static String configurationFolderPath = System.getenv("CAPMANAGER_CONFIG_FOLDER");
+			String app_configFile = configurationFolderPath+"/config/app_configuration.json";
+
+
+			idemixEntity= new NetworkEntity("/usr/local/tomcat/conf/configuration_files/config/network_configuration.json", "idemix");
+
+	        String token 	= new HttpsClient().getIdemixAuthToken(configurationFolderPath, app_configFile, body);
 	        System.out.println("========================");
 	        System.out.println("User Token");
 	        System.out.println("========================");
-	        System.out.println(token);
-
-		    String userInfo = new HttpsClient().getInfo4mToken(token);
+			System.out.println(token);
+			
+			public static String configurationFolderPath = System.getenv("CAPMANAGER_CONFIG_FOLDER");
+		    String userInfo = new HttpsClient(configurationFolderPath+"/config/network_configuration.json").getInfo4mToken(configurationFolderPath, app_configFile, token);
 	        
 	        System.out.println("========================");
 	        System.out.println("User Info");

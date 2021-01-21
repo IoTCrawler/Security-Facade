@@ -44,6 +44,7 @@ import es.odins.util.IOmanagement;
 public class ObtainCapabilityTokenIdemixVerification extends HttpServlet 
 {
 	public static String configurationFolderPath = System.getenv("CAPMANAGER_CONFIG_FOLDER");
+	public static String app_configFile = configurationFolderPath+"/config/app_configuration.json";
 	public  static NetworkEntity idemixEntity 		= null; 
 	public  static NetworkEntity pdpEntity 	= null; 
 
@@ -132,7 +133,7 @@ public class ObtainCapabilityTokenIdemixVerification extends HttpServlet
 		  
 		System.out.println("Acceding the Idemix Component through the URL " + idemixEntity.getURL("getToken") );
 		
-	    String userInfo = new HttpsClient().getInfo4mToken( idemixEntity.getURL("getToken").toString() , idemixToken);		
+	    String userInfo = new HttpsClient(configurationFolderPath+"/config/network_configuration.json").getInfo4mToken(configurationFolderPath, app_configFile, idemixToken);		
 
 	    if(userInfo.equals("") || userInfo == null) {
 			response.getWriter().append("There was an error getting the Token.");
